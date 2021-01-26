@@ -21,11 +21,15 @@ import './style.scss';
     fetch(API)
       .then(res => res.json())
       .then(data => {
-        let next = data.next;
 
-        if ( next.startsWith('http:') ) next = 'https' + data.next.slice(4);
+        if ( data.next ) {
+          let next = data.next;
+          if ( next.startsWith('http:') ) next = 'https' + data.next.slice(4);
+          API = next;
+        } else {
+          loadBtn.style.display = 'none'
+        };
 
-        data.next ? API = next : loadBtn.style.display = 'none';
         renderCards(data.results);
       })
       .finally(callback);
