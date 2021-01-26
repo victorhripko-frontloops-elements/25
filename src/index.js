@@ -21,7 +21,11 @@ import './style.scss';
     fetch(API)
       .then(res => res.json())
       .then(data => {
-        data.next ? API = data.next : loadBtn.style.display = 'none';
+        let next = data.next;
+
+        if ( next.startsWith('http:') ) next = 'https' + data.next.slice(4);
+
+        data.next ? API = next : loadBtn.style.display = 'none';
         renderCards(data.results);
       })
       .finally(callback);
